@@ -4,6 +4,7 @@ let circles = [15];
 let xoff = 0.0;
 let slider1;
 let slider2;
+let slider3;
 
 function setup() 
 {
@@ -16,6 +17,8 @@ function setup()
    slider1.position(10, 40);
    slider2 = createSlider(1, 12, 1, 1);
    slider2.position(10, 70);
+   slider3 = createSlider(0.0001, 0.02, 0.0001, 0.0001);
+   slider3.position(10, 10);
    for (let i = 0; i < 15 ; i++)
    {
      circles[i] = new WanderingCircle(random(100));
@@ -27,17 +30,18 @@ function draw()
 {
   let blend1 = slider1.value();
   let blend2 = slider2.value();
+  let speed = slider3.value();
   mixBlend(blend1)
   xoff += 0.01;
   greyBackground();
-  R1.display();
+  R1.display(speed);
   mixBlend(blend2);
   for (let i in circles)
   {
-    circles[i].display();
+    circles[i].display(speed);
     if (i == 7)
     {
-      R2.display();
+      R2.display(speed);
     }
     // if (Math.floor(frameRate()%20) == 0)
     // {
@@ -45,7 +49,7 @@ function draw()
     //   mixBlend();
     // }
   }
-  H1.display();
+  H1.display(speed);
 }
 
 class VerticalLine
@@ -59,16 +63,16 @@ class VerticalLine
     this.B = random(255);
   }
   
-  display()
+  display(speed)
   {
-    this.move();
+    this.move(speed);
     stroke(this.R, this.V, this.B);
     strokeWeight(1);
     line(this.lineX, 0, this.lineX, H);
   }
-  move()
+  move(speed)
   {
-   this.xoff += 0.01;
+   this.xoff += speed;
    this.lineX = noise(this.xoff) * W;
   }
 }
@@ -84,16 +88,16 @@ class HorizontalLine
     this.B = random(255);
   }
   
-  display()
+  display(speed)
   {
-    this.move();
+    this.move(speed);
     stroke(this.R, this.V, this.B);
     strokeWeight(1);
     line(0, this.lineY, W, this.lineY);
   }
-  move()
+  move(speed)
   {
-   this.xoff += 0.01;
+   this.xoff += speed;
    this.lineY = noise(this.xoff) * H;
   }
 }
@@ -113,10 +117,10 @@ class WanderingCircle
     this.B = 255;
   }
   
-  move()
+  move(speed)
   {
-    this.xoff += 0.01;
-    this.yoff += 0.01;
+    this.xoff += speed;
+    this.yoff += speed;
     this.zoff += 0.01;
     this.Xpos = (noise(this.xoff)*W*2) - 700;
     this.Ypos = noise(this.yoff)*H;
@@ -126,9 +130,9 @@ class WanderingCircle
     this.size += noise(this.zoff);
     this.size -= noise(this.yoff);
   }
-  display()
+  display(speed)
   {
-    this.move();
+    this.move(speed);
     this.vary();
     noStroke();
     fill(noise(this.xoff)*this.R, noise(this.yoff)*this.V, noise(this.zoff)*this.B);
@@ -149,15 +153,15 @@ class CenterRect
     this.originalSize = thesize;
   }
   
-  vary()
+  vary(speed)
   {
-    this.xoff += 0.01;
-    this.yoff += 0.01;
+    this.xoff += speed;
+    this.yoff += speed;
     this.size = noise(this.xoff)*this.originalSize;
   }
-  display()
+  display(speed)
   {
-    this.vary();
+    this.vary(speed);
     rectMode(CENTER);
     noStroke();
     fill(int(noise(this.yoff)*255), int(noise(this.xoff)*155), 255 - int(noise(this.xoff) * 255));
