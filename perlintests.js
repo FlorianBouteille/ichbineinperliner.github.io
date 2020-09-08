@@ -2,9 +2,11 @@ let W = window.innerWidth;
 let H = window.innerHeight;
 let circles = [15];
 let xoff = 0.0;
-let slider1;
-let slider2;
 let slider3;
+let config1 = 1;
+let config2 = 1;
+let config3 = 1;
+
 
 function setup() 
 {
@@ -13,23 +15,22 @@ function setup()
    H1 = new HorizontalLine();
    R1 = new CenterRect(300);
    R2 = new CenterRect(400);
-   slider1 = createSlider(1, 12, 1, 1);
-   slider1.position(10, 40);
-   slider2 = createSlider(1, 12, 1, 1);
-   slider2.position(10, 70);
    slider3 = createSlider(0.0001, 0.02, 0.0001, 0.0001);
-   slider3.position(10, 10);
+   slider3.position(W/2 - 100, H - 50);
+   slider3.style("color", "rgb(0)");
    for (let i = 0; i < 15 ; i++)
    {
      circles[i] = new WanderingCircle(random(100));
    }
+   superButton("Bonjour", W/2 - W/24, H/2 - W/22);
 }
 
 
 function draw() 
 {
-  let blend1 = slider1.value();
-  let blend2 = slider2.value();
+  let blend1 = config1;
+  let blend2 = config2;
+  let blend3 = config3;
   let speed = slider3.value();
   mixBlend(blend1)
   xoff += 0.01;
@@ -42,6 +43,7 @@ function draw()
     if (i == 7)
     {
       R2.display(speed);
+      mixBlend(blend3);
     }
     // if (Math.floor(frameRate()%20) == 0)
     // {
@@ -220,7 +222,28 @@ function mixBlend(number)
       blendMode(HARD_LIGHT);
       break;
   }
+  console.log(number);
 }
 
-
- 
+function superButton(name, posX, posY)
+{
+  let buttonSize = W/20;
+  name = createButton("");
+  name.position(posX, posY);
+  name.style("padding", buttonSize);
+  name.style("border", "none");
+  name.style("background", "rgba(125, 125, 125, 0)");
+  name.style("border-radius", "100%");
+  name.mouseOver(function()
+                {
+                    name.style("background", "rgba(85, 85, 85, 0.8)");
+                    console.log("yolo");
+                })
+  name.mouseClicked(function()
+                {
+                    name.style("background", "rgba(125, 125, 125, 0)"); 
+                    config1 = Math.floor(Math.random()*12 + 1);
+                    config2 = Math.floor(Math.random()*12 + 1);
+                    config3 = Math.floor(Math.random()*12 + 1);
+                })
+} 

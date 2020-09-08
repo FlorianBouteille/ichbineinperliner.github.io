@@ -1,0 +1,9 @@
+.myCustomHover:hover
+{
+    background:rgba(85, 85, 85, 0.3);
+}
+
+.myCustomHover:active
+{
+    background:rgba(165, 165, 165, 0.4);
+}
